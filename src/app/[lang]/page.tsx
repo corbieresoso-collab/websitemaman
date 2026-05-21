@@ -183,7 +183,7 @@ export default async function HomePage({
                 src={previewArtwork.image}
                 alt={serieLabel}
                 fill
-                className="object-cover opacity-60 group-hover:opacity-72 group-hover:scale-[1.04] transition-all duration-1000"
+                className="object-cover opacity-80 group-hover:opacity-90 group-hover:scale-[1.04] transition-all duration-1000"
                 sizes="100vw"
               />
               {/* Gradient only on text side so artwork visible on other side */}
