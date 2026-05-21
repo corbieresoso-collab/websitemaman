@@ -155,7 +155,7 @@ function ChapterHeader({
           src={previewArtwork.image}
           alt=""
           fill
-          className="object-contain opacity-[0.14]"
+          className="object-contain opacity-[0.26]"
           sizes="100vw"
           aria-hidden
         />
@@ -166,7 +166,7 @@ function ChapterHeader({
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 0%, rgba(250,247,242,0.2) 45%, rgba(250,247,242,0.82) 100%)",
+            "radial-gradient(ellipse at center, transparent 0%, rgba(250,247,242,0.12) 40%, rgba(250,247,242,0.75) 100%)",
         }}
       />
 
@@ -358,6 +358,16 @@ function ArcCarousel({
                   opacity: props.opacity,
                   zIndex: props.zIndex,
                 }}
+                whileHover={
+                  !isCurrent
+                    ? {
+                        scale: props.scale * 1.12,
+                        opacity: Math.min(props.opacity + 0.25, 1),
+                        z: props.z + 40,
+                        zIndex: props.zIndex + 2,
+                      }
+                    : undefined
+                }
                 exit={{ opacity: 0, scale: props.scale * 0.8 }}
                 transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
                 className={isCurrent ? "arc-center-float" : ""}

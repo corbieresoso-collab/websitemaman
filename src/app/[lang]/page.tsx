@@ -56,11 +56,11 @@ export default async function HomePage({
             src={hero.image}
             alt={heroTitle}
             fill
-            className="object-cover opacity-[0.28]"
+            className="object-cover opacity-55"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-bg/40 via-transparent to-bg/65" />
-          <div className="absolute inset-0 bg-gradient-to-r from-bg/45 via-transparent to-bg/45" />
+          {/* Minimal gradient — only to ensure text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-bg/20 via-transparent to-bg/50" />
         </div>
 
         <div className="relative z-10 text-center px-6 max-w-2xl mx-auto">
@@ -104,87 +104,104 @@ export default async function HomePage({
         </div>
       </div>
 
-      {/* ── Collections overview ── */}
-      <section className="max-w-7xl mx-auto px-6 py-24 md:py-36">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
-          {series.map((serie) => {
-            const previewArtwork = artworks.find((a) => a.serie === serie)!;
-            const serieLabel =
-              dict.gallery.series[serie as keyof typeof dict.gallery.series];
-            const tagline = seriesTaglines[serie][l];
-            const count = artworks.filter((a) => a.serie === serie).length;
+      {/* ── Collections — cinematic chapters ── */}
+      {series.map((serie, i) => {
+        const isEven = i % 2 === 0;
+        const previewArtwork = artworks.find((a) => a.serie === serie)!;
+        const serieLabel =
+          dict.gallery.series[serie as keyof typeof dict.gallery.series];
+        const tagline = seriesTaglines[serie][l];
+        const count = artworks.filter((a) => a.serie === serie).length;
+        const exploreWord =
+          l === "fr" ? "Explorer" : l === "en" ? "Explore" : "Explorar";
 
-            return (
-              <Link
-                key={serie}
-                href={`/${l}/galerie#${serie}`}
-                className="group relative bg-bg overflow-hidden block"
+        return (
+          <Link
+            key={serie}
+            href={`/${l}/galerie#${serie}`}
+            className="group relative min-h-[88vh] flex items-center overflow-hidden block"
+          >
+            {/* Full-bleed artwork */}
+            <div className="absolute inset-0">
+              <Image
+                src={previewArtwork.image}
+                alt={serieLabel}
+                fill
+                className="object-cover opacity-60 group-hover:opacity-72 group-hover:scale-[1.04] transition-all duration-1000"
+                sizes="100vw"
+              />
+              {/* Gradient only on text side so artwork visible on other side */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: isEven
+                    ? "linear-gradient(to right, rgba(250,247,242,0.95) 0%, rgba(250,247,242,0.7) 35%, rgba(250,247,242,0.1) 65%, transparent 100%)"
+                    : "linear-gradient(to left, rgba(250,247,242,0.95) 0%, rgba(250,247,242,0.7) 35%, rgba(250,247,242,0.1) 65%, transparent 100%)",
+                }}
+              />
+            </div>
+
+            {/* Text block — positioned to left or right */}
+            <div
+              className={`relative z-10 px-10 md:px-20 py-16 max-w-md ${isEven ? "mr-auto" : "ml-auto"}`}
+            >
+              <span
+                className="block text-muted/50 mb-6"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "10px",
+                  letterSpacing: "0.5em",
+                  textTransform: "uppercase",
+                }}
               >
-                {/* Artwork thumbnail */}
-                <div className="relative h-64 md:h-80 overflow-hidden">
-                  <Image
-                    src={previewArtwork.image}
-                    alt={serieLabel}
-                    fill
-                    className="object-contain opacity-40 group-hover:opacity-55 group-hover:scale-[1.03] transition-all duration-700"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-bg/20 to-bg/70" />
-                </div>
+                {seriesNumbers[serie]}
+              </span>
 
-                {/* Info */}
-                <div className="px-8 py-7 border-t border-border">
-                  <div className="flex items-baseline justify-between mb-3">
-                    <span
-                      className="text-[10px] tracking-[0.4em] text-muted/50"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      {seriesNumbers[serie]}
-                    </span>
-                    <span
-                      className="text-[10px] tracking-[0.3em] text-muted/40"
-                      style={{ fontFamily: "var(--font-body)" }}
-                    >
-                      {count} {l === "fr" ? "œuvres" : l === "en" ? "works" : "obras"}
-                    </span>
-                  </div>
+              <h2
+                className="font-light italic text-text group-hover:text-gold transition-colors duration-500 leading-none mb-5"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(3rem, 7vw, 5.5rem)",
+                }}
+              >
+                {serieLabel}
+              </h2>
 
-                  <h2
-                    className="font-light italic text-text group-hover:text-gold transition-colors duration-400 mb-2"
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontSize: "clamp(1.8rem, 3vw, 2.6rem)",
-                    }}
-                  >
-                    {serieLabel}
-                  </h2>
+              <p
+                className="text-muted mb-8"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "11px",
+                  letterSpacing: "0.28em",
+                  textTransform: "uppercase",
+                  lineHeight: "1.7",
+                }}
+              >
+                {tagline}
+              </p>
 
-                  <p
-                    className="text-muted text-xs tracking-[0.22em] uppercase"
-                    style={{ fontFamily: "var(--font-body)" }}
-                  >
-                    {tagline}
-                  </p>
+              <div
+                className="w-10 h-px mb-8"
+                style={{ background: "rgba(201,168,76,0.4)" }}
+              />
 
-                  <div className="flex items-center gap-3 mt-5 text-muted/40 group-hover:text-gold transition-colors duration-400">
-                    <span className="w-5 h-px bg-current group-hover:w-9 transition-all duration-500" />
-                    <span
-                      style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: "10px",
-                        letterSpacing: "0.3em",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {l === "fr" ? "Explorer" : l === "en" ? "Explore" : "Explorar"}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+              <div className="flex items-center gap-3 text-muted/50 group-hover:text-gold transition-colors duration-500">
+                <span className="w-6 h-px bg-current group-hover:w-12 transition-all duration-500" />
+                <span
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "10px",
+                    letterSpacing: "0.35em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {exploreWord} — {count} {l === "fr" ? "œuvres" : l === "en" ? "works" : "obras"}
+                </span>
+              </div>
+            </div>
+          </Link>
+        );
+      })}
     </div>
   );
 }
