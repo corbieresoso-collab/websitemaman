@@ -161,12 +161,18 @@ function ChapterHeader({
         />
       </div>
 
-      {/* Vignette overlay */}
+      {/* Dark radial behind text for readability */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 0%, rgba(250,247,242,0.05) 45%, rgba(250,247,242,0.60) 100%)",
+          background: "radial-gradient(ellipse 80% 65% at 50% 55%, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.25) 55%, transparent 100%)",
+        }}
+      />
+      {/* Edge vignette (cream fade) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at center, transparent 30%, rgba(250,247,242,0.55) 100%)",
         }}
       />
 
@@ -176,7 +182,7 @@ function ChapterHeader({
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 1.5, delay: 0.1 }}
           className="block tracking-[0.55em] uppercase text-xs mb-10"
-          style={{ fontFamily: "var(--font-body)", color: "rgba(28,20,16,0.35)" }}
+          style={{ fontFamily: "var(--font-body)", color: "rgba(250,247,242,0.80)", textShadow: "0 0 20px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.9)" }}
         >
           {number}
         </motion.span>
@@ -189,7 +195,8 @@ function ChapterHeader({
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(3.5rem, 14vw, 11rem)",
-            color: "#1c1410",
+            color: "#ffffff",
+            textShadow: "0 0 60px rgba(0,0,0,1), 0 0 120px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,1)",
           }}
         >
           {title}
@@ -207,7 +214,7 @@ function ChapterHeader({
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 1, delay: 1.1 }}
           className="text-xs tracking-[0.3em] uppercase"
-          style={{ fontFamily: "var(--font-body)", color: "rgba(28,20,16,0.50)" }}
+          style={{ fontFamily: "var(--font-body)", color: "rgba(250,247,242,0.90)", textShadow: "0 0 20px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.9)" }}
         >
           {tagline}
         </motion.p>

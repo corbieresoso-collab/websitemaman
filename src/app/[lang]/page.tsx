@@ -115,7 +115,7 @@ export default async function HomePage({
           <div className="animate-fade-in-up delay-800">
             <Link
               href={`/${l}/galerie`}
-              className="hero-cta inline-block border transition-all duration-500 px-10 py-4 tracking-[0.25em] uppercase text-xs"
+              className="hero-cta-solid inline-block transition-all duration-500 px-10 py-4 tracking-[0.25em] uppercase text-xs"
               style={{ fontFamily: "var(--font-body)" }}
             >
               {dict.home.enter}
@@ -143,7 +143,11 @@ export default async function HomePage({
             fontSize: "clamp(2rem, 5vw, 3.5rem)",
           }}
         >
-          {l === "fr" ? "Découvrez les collections" : l === "en" ? "Explore the collections" : "Descubre las colecciones"}
+          {l === "fr"
+            ? "Entrez dans un monde où l'intérieur devient paysage"
+            : l === "en"
+            ? "Enter a world where the interior becomes landscape"
+            : "Entra en un mundo donde el interior se convierte en paisaje"}
         </h2>
         <div className="w-8 h-px bg-gold/50 mx-auto" />
       </div>
@@ -179,8 +183,8 @@ export default async function HomePage({
                 className="absolute inset-0"
                 style={{
                   background: isEven
-                    ? "linear-gradient(to right, rgba(250,247,242,0.95) 0%, rgba(250,247,242,0.7) 35%, rgba(250,247,242,0.1) 65%, transparent 100%)"
-                    : "linear-gradient(to left, rgba(250,247,242,0.95) 0%, rgba(250,247,242,0.7) 35%, rgba(250,247,242,0.1) 65%, transparent 100%)",
+                    ? "linear-gradient(to right, rgba(250,247,242,1) 0%, rgba(250,247,242,1) 30%, rgba(250,247,242,0.85) 48%, rgba(250,247,242,0.2) 68%, transparent 100%)"
+                    : "linear-gradient(to left, rgba(250,247,242,1) 0%, rgba(250,247,242,1) 30%, rgba(250,247,242,0.85) 48%, rgba(250,247,242,0.2) 68%, transparent 100%)",
                 }}
               />
             </div>

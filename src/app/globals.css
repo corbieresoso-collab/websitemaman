@@ -71,6 +71,21 @@ body {
   border-color: rgba(201,168,76,0.5);
 }
 
+/* Solid gold-tinted button for hero */
+.hero-cta-solid {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.55);
+  color: #faf7f2;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+}
+.hero-cta-solid:hover {
+  background: rgba(201,168,76,0.30);
+  border-color: rgba(201,168,76,0.85);
+  color: #ffffff;
+}
+
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
