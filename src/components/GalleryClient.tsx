@@ -155,7 +155,7 @@ function ChapterHeader({
           src={previewArtwork.image}
           alt=""
           fill
-          className="object-contain opacity-[0.26]"
+          className="object-contain opacity-[0.50]"
           sizes="100vw"
           aria-hidden
         />
@@ -166,7 +166,7 @@ function ChapterHeader({
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 0%, rgba(250,247,242,0.12) 40%, rgba(250,247,242,0.75) 100%)",
+            "radial-gradient(ellipse at center, transparent 0%, rgba(250,247,242,0.05) 45%, rgba(250,247,242,0.60) 100%)",
         }}
       />
 

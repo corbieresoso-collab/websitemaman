@@ -72,7 +72,8 @@ export default async function HomePage({
           </p>
 
           <h1
-            className="animate-fade-in-up delay-400 font-light italic text-text leading-none mb-6"
+            className="animate-fade-in-up delay-400 font-light italic leading-none mb-6"
+            style={{ color: "#ffffff" }}
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(3.5rem, 12vw, 8rem)",
@@ -82,7 +83,8 @@ export default async function HomePage({
           </h1>
 
           <p
-            className="animate-fade-in-up delay-600 text-muted text-xs tracking-[0.3em] uppercase mb-16"
+            className="animate-fade-in-up delay-600 text-xs tracking-[0.3em] uppercase mb-16"
+            style={{ color: "rgba(250,247,242,0.75)" }}
             style={{ fontFamily: "var(--font-body)" }}
           >
             {dict.home.subtitle}
@@ -91,7 +93,7 @@ export default async function HomePage({
           <div className="animate-fade-in-up delay-800">
             <Link
               href={`/${l}/galerie`}
-              className="inline-block border border-border text-muted hover:text-gold hover:border-gold/50 transition-all duration-500 px-10 py-4 tracking-[0.25em] uppercase text-xs"
+              className="hero-cta inline-block border transition-all duration-500 px-10 py-4 tracking-[0.25em] uppercase text-xs"
               style={{ fontFamily: "var(--font-body)" }}
             >
               {dict.home.enter}
@@ -179,11 +181,6 @@ export default async function HomePage({
               >
                 {tagline}
               </p>
-
-              <div
-                className="w-10 h-px mb-8"
-                style={{ background: "rgba(201,168,76,0.4)" }}
-              />
 
               <div className="flex items-center gap-3 text-muted/50 group-hover:text-gold transition-colors duration-500">
                 <span className="w-6 h-px bg-current group-hover:w-12 transition-all duration-500" />

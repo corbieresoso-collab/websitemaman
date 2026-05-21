@@ -62,6 +62,15 @@ body {
 .delay-800 { animation-delay: 0.8s; }
 .delay-1000 { animation-delay: 1s; }
 
+.hero-cta {
+  color: rgba(250,247,242,0.80);
+  border-color: rgba(250,247,242,0.35);
+}
+.hero-cta:hover {
+  color: #c9a84c;
+  border-color: rgba(201,168,76,0.5);
+}
+
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
