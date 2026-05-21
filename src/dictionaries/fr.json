@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "gallery": "Galerie",
+    "studio": "Atelier",
+    "order": "Commander"
+  },
+  "home": {
+    "tagline": "Visions du dedans",
+    "subtitle": "Œuvres originales au crayon sur papier noir",
+    "enter": "Entrer dans la galerie"
+  },
+  "gallery": {
+    "title": "Galerie",
+    "all": "Toutes",
+    "series": {
+      "cosmogonie": "Cosmogonie",
+      "entites": "Entités",
+      "biomes": "Biomes",
+      "abysses": "Abysses"
+    }
+  },
+  "artwork": {
+    "series_label": "Série",
+    "order_cta": "Commander une reproduction",
+    "back": "← Retour à la galerie"
+  },
+  "order": {
+    "title": "Commander une reproduction",
+    "intro": "Chaque reproduction est imprimée sur commande par Nathalie. Délai moyen : 2 à 3 semaines.",
+    "name": "Votre nom",
+    "email": "Adresse email",
+    "artwork_label": "Œuvre choisie",
+    "format_label": "Format",
+    "paper_label": "Type de papier",
+    "message_label": "Message (optionnel)",
+    "send": "Envoyer ma commande",
+    "note": "Nathalie vous répondra sous 48h avec le devis et les modalités de paiement.",
+    "formats": {
+      "a4": "A4 — 21×29 cm",
+      "a3": "A3 — 29×42 cm",
+      "a2": "A2 — 42×59 cm",
+      "40x50": "40×50 cm",
+      "50x70": "50×70 cm"
+    },
+    "papers": {
+      "mat": "Papier mat premium",
+      "satin": "Papier satiné",
+      "fineart": "Fine Art coton 300g",
+      "canvas": "Toile canvas"
+    }
+  },
+  "studio": {
+    "title": "Atelier",
+    "name": "Nathalie Żieba",
+    "bio_1": "Depuis l'enfance, Nathalie dessine ce que les mots ne peuvent pas dire. Ses œuvres naissent dans le noir — sur papier noir, au crayon de couleur — comme si la lumière devait mériter d'exister.",
+    "bio_2": "Son univers se situe entre deux échelles impossibles : le microscopique et le cosmique. Ses formes évoquent autant des cellules vues au microscope que des nébuleuses observées au télescope. Entre les deux, il y a l'intérieur de l'être humain.",
+    "bio_3": "Chaque œuvre est un rêve capturé avant l'oubli. Une anatomie de l'invisible.",
+    "technique": "Technique",
+    "technique_detail": "Crayon de couleur sur papier noir",
+    "contact_title": "Contact",
+    "contact_text": "Pour toute question sur les œuvres ou les reproductions :"
+  },
+  "footer": {
+    "rights": "Tous droits réservés",
+    "made_with": "Fait avec soin"
+  }
+}

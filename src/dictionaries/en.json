@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "gallery": "Gallery",
+    "studio": "Studio",
+    "order": "Order"
+  },
+  "home": {
+    "tagline": "Visions from Within",
+    "subtitle": "Original works in coloured pencil on black paper",
+    "enter": "Enter the gallery"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "all": "All",
+    "series": {
+      "cosmogonie": "Cosmogony",
+      "entites": "Entities",
+      "biomes": "Biomes",
+      "abysses": "Abysses"
+    }
+  },
+  "artwork": {
+    "series_label": "Series",
+    "order_cta": "Order a reproduction",
+    "back": "← Back to gallery"
+  },
+  "order": {
+    "title": "Order a reproduction",
+    "intro": "Each reproduction is printed on demand by Nathalie. Average lead time: 2 to 3 weeks.",
+    "name": "Your name",
+    "email": "Email address",
+    "artwork_label": "Chosen artwork",
+    "format_label": "Format",
+    "paper_label": "Paper type",
+    "message_label": "Message (optional)",
+    "send": "Send my order",
+    "note": "Nathalie will reply within 48 hours with a quote and payment details.",
+    "formats": {
+      "a4": "A4 — 21×29 cm",
+      "a3": "A3 — 29×42 cm",
+      "a2": "A2 — 42×59 cm",
+      "40x50": "40×50 cm",
+      "50x70": "50×70 cm"
+    },
+    "papers": {
+      "mat": "Premium matte paper",
+      "satin": "Satin paper",
+      "fineart": "Fine Art cotton 300g",
+      "canvas": "Canvas"
+    }
+  },
+  "studio": {
+    "title": "Studio",
+    "name": "Nathalie Żieba",
+    "bio_1": "Since childhood, Nathalie draws what words cannot say. Her works are born in the dark — on black paper, with coloured pencils — as if light had to earn its existence.",
+    "bio_2": "Her universe exists between two impossible scales: the microscopic and the cosmic. Her forms evoke both cells seen under a microscope and nebulae observed through a telescope. In between lies the interior of the human being.",
+    "bio_3": "Each work is a dream captured before forgetting. An anatomy of the invisible.",
+    "technique": "Technique",
+    "technique_detail": "Coloured pencil on black paper",
+    "contact_title": "Contact",
+    "contact_text": "For any question about the works or reproductions:"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "made_with": "Made with care"
+  }
+}
