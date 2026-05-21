@@ -59,24 +59,36 @@ export default async function HomePage({
             className="object-cover opacity-55"
             priority
           />
-          {/* Minimal gradient — only to ensure text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-b from-bg/20 via-transparent to-bg/50" />
+          {/* Top/bottom fade */}
+          <div className="absolute inset-0 bg-gradient-to-b from-bg/30 via-transparent to-bg/60" />
+          {/* Soft dark radial behind text — keeps artwork visible at edges */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,0.35) 0%, transparent 100%)",
+            }}
+          />
         </div>
 
         <div className="relative z-10 text-center px-6 max-w-2xl mx-auto">
           <p
-            className="animate-fade-in delay-200 text-muted tracking-[0.35em] uppercase text-xs mb-8"
-            style={{ fontFamily: "var(--font-body)" }}
+            className="animate-fade-in delay-200 tracking-[0.35em] uppercase text-xs mb-8"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "rgba(250,247,242,0.65)",
+              textShadow: "0 1px 10px rgba(0,0,0,0.5)",
+            }}
           >
             Nathalie Zięba
           </p>
 
           <h1
             className="animate-fade-in-up delay-400 font-light italic leading-none mb-6"
-            style={{ color: "#ffffff" }}
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(3.5rem, 12vw, 8rem)",
+              color: "#faf7f2",
+              textShadow: "0 2px 40px rgba(0,0,0,0.6), 0 1px 8px rgba(0,0,0,0.4)",
             }}
           >
             {dict.home.tagline}
@@ -84,8 +96,11 @@ export default async function HomePage({
 
           <p
             className="animate-fade-in-up delay-600 text-xs tracking-[0.3em] uppercase mb-16"
-            style={{ color: "rgba(250,247,242,0.75)" }}
-            style={{ fontFamily: "var(--font-body)" }}
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "rgba(250,247,242,0.80)",
+              textShadow: "0 1px 12px rgba(0,0,0,0.5)",
+            }}
           >
             {dict.home.subtitle}
           </p>

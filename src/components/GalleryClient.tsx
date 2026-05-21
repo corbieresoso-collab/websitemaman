@@ -175,8 +175,8 @@ function ChapterHeader({
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 1.5, delay: 0.1 }}
-          className="block text-muted tracking-[0.55em] uppercase text-xs mb-10"
-          style={{ fontFamily: "var(--font-body)" }}
+          className="block tracking-[0.55em] uppercase text-xs mb-10"
+          style={{ fontFamily: "var(--font-body)", color: "rgba(250,247,242,0.55)", textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
         >
           {number}
         </motion.span>
@@ -185,10 +185,12 @@ function ChapterHeader({
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="font-light italic text-text leading-none mb-10"
+          className="font-light italic leading-none mb-10"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(3.5rem, 14vw, 11rem)",
+            color: "#faf7f2",
+            textShadow: "0 2px 40px rgba(0,0,0,0.5), 0 1px 10px rgba(0,0,0,0.3)",
           }}
         >
           {title}
@@ -205,8 +207,8 @@ function ChapterHeader({
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 1, delay: 1.1 }}
-          className="text-muted text-xs tracking-[0.3em] uppercase"
-          style={{ fontFamily: "var(--font-body)" }}
+          className="text-xs tracking-[0.3em] uppercase"
+          style={{ fontFamily: "var(--font-body)", color: "rgba(250,247,242,0.70)", textShadow: "0 1px 12px rgba(0,0,0,0.6)" }}
         >
           {tagline}
         </motion.p>
