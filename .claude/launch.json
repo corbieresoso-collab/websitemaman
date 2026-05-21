@@ -3,9 +3,10 @@
   "configurations": [
     {
       "name": "zieba-nathalie",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "runtimeExecutable": "/Users/wildexperiences/Desktop/Claude Code, boutique Etsy/zieba-nathalie/node_modules/.bin/next",
+      "runtimeArgs": ["dev", "--port", "3001"],
+      "cwd": "/Users/wildexperiences/Desktop/Claude Code, boutique Etsy/zieba-nathalie",
+      "port": 3001
     }
   ]
 }

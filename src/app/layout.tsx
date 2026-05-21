@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-import Starfield from "@/components/Starfield";
+import GoldenDust from "@/components/GoldenDust";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -31,7 +31,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-bg text-text">
-        <Starfield />
+        <GoldenDust />
         {children}
       </body>
     </html>

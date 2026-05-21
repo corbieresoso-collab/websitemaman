@@ -1,7 +1,7 @@
 {
   "nav": {
     "gallery": "Galerie",
-    "studio": "Atelier",
+    "about": "À propos",
     "order": "Commander"
   },
   "home": {
@@ -48,6 +48,31 @@
       "fineart": "Fine Art coton 300g",
       "canvas": "Toile canvas"
     }
+  },
+  "about": {
+    "title": "À propos",
+    "name": "Nathalie Żieba",
+    "bio_1": "Depuis l'enfance, Nathalie dessine ce que les mots ne peuvent pas dire. Ses œuvres naissent dans le noir — sur papier noir, au crayon de couleur — comme si la lumière devait mériter d'exister.",
+    "bio_2": "Son univers se situe entre deux échelles impossibles : le microscopique et le cosmique. Ses formes évoquent autant des cellules vues au microscope que des nébuleuses observées au télescope. Entre les deux, il y a l'intérieur de l'être humain.",
+    "bio_3": "Chaque œuvre est un rêve capturé avant l'oubli. Une anatomie de l'invisible.",
+    "quote": "Je dessine ce que je vois quand je ferme les yeux.",
+    "technique_title": "Technique",
+    "technique_detail": "Crayon de couleur sur papier noir",
+    "contact_title": "Contact",
+    "contact_text": "Pour toute question sur les œuvres ou les reproductions :"
+  },
+  "how": {
+    "title": "Comment ça marche ?",
+    "subtitle": "Chaque reproduction est une pièce unique, imprimée avec soin.",
+    "step1_title": "Choisissez une œuvre",
+    "step1_text": "Explorez les quatre collections. Quand une œuvre vous touche, cliquez sur « Commander une reproduction ».",
+    "step2_title": "Choisissez votre format",
+    "step2_text": "Plusieurs formats et types de papier disponibles — du A4 au 50×70 cm, mat, satiné ou Fine Art coton 300g.",
+    "step3_title": "Nathalie imprime pour vous",
+    "step3_text": "Nathalie reçoit votre commande et supervise chaque impression. Délai moyen 2 à 3 semaines, envoi soigné.",
+    "cta_gallery": "Voir la galerie",
+    "form_title": "Passer une commande",
+    "form_intro": "Remplissez ce formulaire et Nathalie vous répondra sous 48h avec un devis détaillé."
   },
   "studio": {
     "title": "Atelier",

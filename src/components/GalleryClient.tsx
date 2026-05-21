@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView, AnimatePresence } from "framer-motion";
@@ -75,7 +75,7 @@ export default function GalleryClient({
               tagline={meta.tagline[lang]}
               previewArtwork={serieArtworks[0]}
             />
-            <SeriesCarousel
+            <ArcCarousel
               artworks={serieArtworks}
               lang={lang}
               dict={dict}
@@ -100,7 +100,7 @@ function ChapterNav({
   dict: Dictionary;
 }) {
   return (
-    <nav className="sticky top-[72px] z-40 bg-bg/90 backdrop-blur-sm border-b border-border/50">
+    <nav className="sticky top-[72px] z-40 bg-bg/90 backdrop-blur-sm border-b border-border/60">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6 overflow-x-auto no-scrollbar">
         {series.map((serie, i) => {
           const meta = seriesMeta[serie];
@@ -113,7 +113,7 @@ function ChapterNav({
               className="flex-shrink-0 flex items-center gap-2 text-muted hover:text-text transition-colors duration-300 group"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              <span className="text-[10px] tracking-[0.3em] text-muted/50 group-hover:text-teal/70 transition-colors duration-300">
+              <span className="text-[10px] tracking-[0.3em] text-muted/50 group-hover:text-gold/70 transition-colors duration-300">
                 {meta.number}
               </span>
               <span className="text-xs tracking-[0.18em] uppercase">{label}</span>
@@ -128,7 +128,7 @@ function ChapterNav({
   );
 }
 
-/* ─── Chapter header (full-screen intro per series) ──── */
+/* ─── Chapter header ─────────────────────────────────── */
 
 function ChapterHeader({
   number,
@@ -155,18 +155,18 @@ function ChapterHeader({
           src={previewArtwork.image}
           alt=""
           fill
-          className="object-contain opacity-[0.05]"
+          className="object-contain opacity-[0.06]"
           sizes="100vw"
           aria-hidden
         />
       </div>
 
-      {/* Radial vignette */}
+      {/* Vignette overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 0%, rgba(7,7,10,0.5) 55%, rgb(7,7,10) 100%)",
+            "radial-gradient(ellipse at center, transparent 0%, rgba(250,247,242,0.35) 50%, rgba(250,247,242,0.9) 100%)",
         }}
       />
 
@@ -198,7 +198,7 @@ function ChapterHeader({
           initial={{ opacity: 0, scaleX: 0 }}
           animate={inView ? { opacity: 1, scaleX: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.85 }}
-          className="w-12 h-px bg-teal mx-auto mb-8 origin-left"
+          className="w-12 h-px bg-gold mx-auto mb-8 origin-left"
         />
 
         <motion.p
@@ -218,36 +218,51 @@ function ChapterHeader({
         transition={{ duration: 1, delay: 1.5 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
-        <div className="w-px h-14 bg-gradient-to-b from-transparent to-muted/25" />
+        <div className="w-px h-14 bg-gradient-to-b from-transparent to-muted/20" />
       </motion.div>
     </div>
   );
 }
 
-/* ─── Horizontal carousel per series ────────────────── */
+/* ─── 3D Arc carousel ────────────────────────────────── */
 
-const slideVariants = {
-  enter: (dir: number) => ({
-    opacity: 0,
-    x: dir > 0 ? 80 : -80,
-  }),
-  center: {
-    opacity: 1,
-    x: 0,
-  },
-  exit: (dir: number) => ({
-    opacity: 0,
-    x: dir > 0 ? -80 : 80,
-  }),
+// Arc parameters per offset from center
+interface ArcStep {
+  x: number;
+  rotateY: number;
+  z: number;
+  scale: number;
+  opacity: number;
+  zIndex: number;
+}
+
+const ARC_DESKTOP: Record<number, ArcStep> = {
+  0: { x: 0,    rotateY: 0,    z: 0,    scale: 1,    opacity: 1,    zIndex: 10 },
+  1: { x: 290,  rotateY: -30,  z: -100, scale: 0.77, opacity: 0.62, zIndex: 8 },
+  2: { x: 510,  rotateY: -54,  z: -240, scale: 0.55, opacity: 0.32, zIndex: 6 },
 };
 
-const textVariants = {
-  enter: { opacity: 0, y: 16 },
-  center: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -16 },
+const ARC_MOBILE: Record<number, ArcStep> = {
+  0: { x: 0,    rotateY: 0,    z: 0,    scale: 1,    opacity: 1,    zIndex: 10 },
+  1: { x: 190,  rotateY: -28,  z: -80,  scale: 0.72, opacity: 0.55, zIndex: 8 },
+  2: { x: 330,  rotateY: -50,  z: -180, scale: 0.50, opacity: 0.25, zIndex: 6 },
 };
 
-function SeriesCarousel({
+function getCardProps(offset: number, isMobile: boolean): ArcStep {
+  const table = isMobile ? ARC_MOBILE : ARC_DESKTOP;
+  const abs = Math.min(Math.abs(offset), 2);
+  const sign = offset >= 0 ? 1 : -1;
+  const base = table[abs];
+  return {
+    ...base,
+    x: sign * base.x,
+    rotateY: sign * base.rotateY,
+  };
+}
+
+const VISIBLE_OFFSETS = [-2, -1, 0, 1, 2];
+
+function ArcCarousel({
   artworks,
   lang,
   dict,
@@ -258,31 +273,33 @@ function SeriesCarousel({
   dict: Dictionary;
   serieLabel: string;
 }) {
-  const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const [current, setCurrent] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-5% 0px" });
   const touchStartX = useRef<number>(0);
 
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const total = artworks.length;
-  const artwork = artworks[index];
-  const title = artwork.titles[lang];
-  const description = artwork.descriptions[lang];
 
   const navigate = useCallback(
     (dir: number) => {
-      setDirection(dir);
-      setIndex((prev) => (prev + dir + total) % total);
+      setCurrent((prev) => (prev + dir + total) % total);
     },
     [total]
   );
 
   const goTo = useCallback(
-    (i: number) => {
-      setDirection(i > index ? 1 : -1);
-      setIndex(i);
+    (idx: number) => {
+      setCurrent(idx);
     },
-    [index]
+    []
   );
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -293,167 +310,208 @@ function SeriesCarousel({
     if (Math.abs(dx) > 48) navigate(dx > 0 ? -1 : 1);
   };
 
+  const visibleItems = VISIBLE_OFFSETS.map((offset) => ({
+    offset,
+    index: (current + offset + total) % total,
+    artwork: artworks[(current + offset + total) % total],
+  }));
+
+  const currentArtwork = artworks[current];
+  const title = currentArtwork.titles[lang];
+  const description = currentArtwork.descriptions[lang];
+
+  const stageH = isMobile ? 320 : 500;
+  const cardW = isMobile ? 180 : 280;
+  const cardH = isMobile ? 230 : 360;
+
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-      className="relative py-16 md:py-24"
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ duration: 1 }}
+      className="relative py-20 md:py-28 overflow-hidden"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16 lg:gap-24">
-
-          {/* ── Artwork + passe-partout ── */}
-          <div
-            className="w-full md:w-[55%] relative"
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-          >
-            {/* Passe-partout frame */}
-            <div
-              className="relative overflow-hidden"
-              style={{
-                background: "#1a1510",
-                padding: "clamp(20px, 5vw, 48px)",
-                boxShadow:
-                  "0 8px 40px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.4)",
-                border: "1px solid rgba(201,168,76,0.07)",
-              }}
-            >
-              <div className="relative" style={{ aspectRatio: "1 / 1" }}>
-                <AnimatePresence custom={direction} mode="wait">
-                  <motion.div
-                    key={artwork.id}
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute inset-0"
-                  >
+      {/* Arc stage */}
+      <div
+        className="relative mx-auto flex items-center justify-center"
+        style={{
+          height: stageH,
+          perspective: "1400px",
+        }}
+      >
+        <AnimatePresence>
+          {visibleItems.map(({ offset, artwork }) => {
+            const props = getCardProps(offset, isMobile);
+            const isCurrent = offset === 0;
+            return (
+              <motion.div
+                key={artwork.id}
+                initial={{ opacity: 0, scale: props.scale * 0.85 }}
+                animate={{
+                  x: props.x,
+                  rotateY: props.rotateY,
+                  z: props.z,
+                  scale: props.scale,
+                  opacity: props.opacity,
+                  zIndex: props.zIndex,
+                }}
+                exit={{ opacity: 0, scale: props.scale * 0.8 }}
+                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                  position: "absolute",
+                  width: cardW,
+                  height: cardH,
+                  cursor: isCurrent ? "default" : "pointer",
+                  transformStyle: "preserve-3d",
+                }}
+                onClick={() => {
+                  if (!isCurrent) {
+                    navigate(offset > 0 ? 1 : -1);
+                  }
+                }}
+              >
+                {/* Passe-partout frame */}
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    background: "#f3ece0",
+                    padding: isMobile ? "14px" : "20px",
+                    boxShadow: isCurrent
+                      ? "0 16px 50px rgba(28,20,16,0.14), 0 4px 14px rgba(28,20,16,0.08)"
+                      : "0 8px 24px rgba(28,20,16,0.09)",
+                    border: "1px solid rgba(201,168,76,0.1)",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <div style={{ position: "relative", width: "100%", height: "100%" }}>
                     <Image
                       src={artwork.image}
-                      alt={title}
+                      alt={artwork.titles[lang]}
                       fill
                       className="object-contain"
-                      sizes="(max-width: 768px) 90vw, 50vw"
+                      sizes={`${cardW}px`}
                     />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-
-            {/* Arrow buttons — flanking the frame */}
-            <button
-              onClick={() => navigate(-1)}
-              aria-label="Œuvre précédente"
-              className="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-muted/40 hover:text-teal transition-colors duration-300 group"
-            >
-              <ArrowLeft />
-            </button>
-            <button
-              onClick={() => navigate(1)}
-              aria-label="Œuvre suivante"
-              className="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-muted/40 hover:text-teal transition-colors duration-300 group"
-            >
-              <ArrowRight />
-            </button>
-          </div>
-
-          {/* ── Text block ── */}
-          <div className="w-full md:w-[45%] flex flex-col">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={artwork.id + "-text"}
-                variants={textVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              >
-                {/* Counter */}
-                <p
-                  className="text-muted/40 mb-7"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "10px",
-                    letterSpacing: "0.45em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {String(index + 1).padStart(2, "0")} /{" "}
-                  {String(total).padStart(2, "0")}
-                </p>
-
-                <p
-                  className="text-teal mb-4"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "10px",
-                    letterSpacing: "0.35em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {serieLabel}
-                </p>
-
-                <h3
-                  className="font-light italic text-text leading-tight mb-7"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "clamp(2rem, 4vw, 3.5rem)",
-                  }}
-                >
-                  {title}
-                </h3>
-
-                <div className="w-8 h-px mb-7" style={{ background: "rgba(78,205,196,0.35)" }} />
-
-                <p
-                  className="text-muted text-sm leading-loose mb-10"
-                  style={{ fontFamily: "var(--font-body)" }}
-                >
-                  {description}
-                </p>
-
-                <Link
-                  href={`/${lang}/oeuvre/${artwork.id}`}
-                  className="inline-flex items-center gap-4 text-text/40 hover:text-teal transition-colors duration-500 group self-start"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "11px",
-                    letterSpacing: "0.25em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  <span className="w-8 h-px bg-current group-hover:w-14 transition-all duration-500" />
-                  {dict.artwork.order_cta}
-                </Link>
+                  </div>
+                </div>
               </motion.div>
-            </AnimatePresence>
+            );
+          })}
+        </AnimatePresence>
+      </div>
 
-            {/* Dots */}
-            <div className="flex items-center gap-2 mt-10 flex-wrap">
-              {artworks.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goTo(i)}
-                  aria-label={`Œuvre ${i + 1}`}
-                  className="h-1 rounded-full transition-all duration-400"
-                  style={{
-                    width: i === index ? "16px" : "4px",
-                    background:
-                      i === index
-                        ? "rgba(78,205,196,0.8)"
-                        : "rgba(107,107,122,0.3)",
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* Navigation row */}
+      <div className="flex items-center justify-center gap-8 mt-12 mb-10">
+        <button
+          onClick={() => navigate(-1)}
+          aria-label="Précédent"
+          className="text-muted/50 hover:text-gold transition-colors duration-300"
+        >
+          <ArrowLeft />
+        </button>
+
+        <span
+          className="text-muted/40"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "10px",
+            letterSpacing: "0.45em",
+            textTransform: "uppercase",
+          }}
+        >
+          {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+
+        <button
+          onClick={() => navigate(1)}
+          aria-label="Suivant"
+          className="text-muted/50 hover:text-gold transition-colors duration-300"
+        >
+          <ArrowRight />
+        </button>
+      </div>
+
+      {/* Dots */}
+      <div className="flex items-center justify-center gap-2 mb-12 flex-wrap px-4">
+        {artworks.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            aria-label={`Œuvre ${i + 1}`}
+            className="h-1 rounded-full transition-all duration-300"
+            style={{
+              width: i === current ? "16px" : "4px",
+              background:
+                i === current
+                  ? "rgba(201,168,76,0.75)"
+                  : "rgba(138,122,104,0.25)",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Text block */}
+      <div className="max-w-xl mx-auto px-8 text-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentArtwork.id + "-text"}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.4 }}
+          >
+            <p
+              className="text-gold mb-3"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "10px",
+                letterSpacing: "0.38em",
+                textTransform: "uppercase",
+              }}
+            >
+              {serieLabel}
+            </p>
+
+            <h3
+              className="font-light italic text-text leading-tight mb-5"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.6rem, 3.5vw, 2.8rem)",
+              }}
+            >
+              {title}
+            </h3>
+
+            <div
+              className="w-8 h-px mx-auto mb-5"
+              style={{ background: "rgba(201,168,76,0.4)" }}
+            />
+
+            <p
+              className="text-muted text-sm leading-relaxed mb-8"
+              style={{ fontFamily: "var(--font-body)" }}
+            >
+              {description}
+            </p>
+
+            <Link
+              href={`/${lang}/oeuvre/${currentArtwork.id}`}
+              className="inline-flex items-center gap-3 text-muted hover:text-gold transition-colors duration-500 group"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "10px",
+                letterSpacing: "0.3em",
+                textTransform: "uppercase",
+              }}
+            >
+              <span className="w-6 h-px bg-current group-hover:w-10 transition-all duration-500" />
+              {dict.artwork.order_cta}
+            </Link>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </motion.div>
   );
@@ -463,32 +521,18 @@ function SeriesCarousel({
 
 function ArrowLeft() {
   return (
-    <svg
-      width="20"
-      height="14"
-      viewBox="0 0 20 14"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1"
-    >
-      <line x1="20" y1="7" x2="1" y2="7" />
-      <polyline points="7,1 1,7 7,13" />
+    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" strokeWidth="1">
+      <line x1="22" y1="7" x2="1" y2="7" />
+      <polyline points="8,1 1,7 8,13" />
     </svg>
   );
 }
 
 function ArrowRight() {
   return (
-    <svg
-      width="20"
-      height="14"
-      viewBox="0 0 20 14"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1"
-    >
-      <line x1="0" y1="7" x2="19" y2="7" />
-      <polyline points="13,1 19,7 13,13" />
+    <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" strokeWidth="1">
+      <line x1="0" y1="7" x2="21" y2="7" />
+      <polyline points="14,1 21,7 14,13" />
     </svg>
   );
 }

@@ -1,40 +1,40 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #07070a;
-  --color-surface: #0f0f14;
-  --color-surface-2: #16161e;
-  --color-text: #f0ede8;
-  --color-muted: #6b6b7a;
-  --color-border: #1e1e2a;
-  --color-teal: #4ecdc4;
+  --color-bg: #faf7f2;
+  --color-surface: #f3ece0;
+  --color-surface-2: #e8e0d0;
+  --color-text: #1c1410;
+  --color-muted: #8a7a68;
+  --color-border: #ddd5c4;
   --color-gold: #c9a84c;
+  --color-teal: #4ecdc4;
 
   --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-body: var(--font-inter), "Inter", system-ui, sans-serif;
 }
 
 html {
-  background-color: #07070a;
-  color: #f0ede8;
+  background-color: #faf7f2;
+  color: #1c1410;
   scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-body);
-  background-color: #07070a;
-  color: #f0ede8;
+  background-color: #faf7f2;
+  color: #1c1410;
   min-height: 100vh;
 }
 
 ::selection {
-  background-color: rgba(78, 205, 196, 0.2);
-  color: #f0ede8;
+  background-color: rgba(201, 168, 76, 0.2);
+  color: #1c1410;
 }
 
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #07070a; }
-::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 2px; }
+::-webkit-scrollbar-track { background: #faf7f2; }
+::-webkit-scrollbar-thumb { background: #ddd5c4; border-radius: 2px; }
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -65,27 +65,27 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Starfield layers */
-.star-layer-1 {
-  animation: starPulse1 7s ease-in-out infinite alternate;
+/* Golden dust layers */
+.dust-layer-1 {
+  animation: dustPulse1 9s ease-in-out infinite alternate;
 }
-.star-layer-2 {
-  animation: starPulse2 11s ease-in-out infinite alternate-reverse;
+.dust-layer-2 {
+  animation: dustPulse2 14s ease-in-out infinite alternate-reverse;
 }
-.star-layer-3 {
-  animation: starPulse3 15s ease-in-out infinite alternate;
+.dust-layer-3 {
+  animation: dustPulse3 19s ease-in-out infinite alternate;
 }
 
-@keyframes starPulse1 {
-  0%   { opacity: 0.45; }
-  100% { opacity: 0.9; }
+@keyframes dustPulse1 {
+  0%   { opacity: 0.25; transform: translateY(0px) translateX(0px); }
+  100% { opacity: 0.55; transform: translateY(-6px) translateX(2px); }
 }
-@keyframes starPulse2 {
-  0%   { opacity: 0.7; }
-  100% { opacity: 0.35; }
+@keyframes dustPulse2 {
+  0%   { opacity: 0.35; transform: translateY(0px) translateX(0px); }
+  100% { opacity: 0.15; transform: translateY(-4px) translateX(-3px); }
 }
-@keyframes starPulse3 {
-  0%   { opacity: 0.6; }
-  50%  { opacity: 1; }
-  100% { opacity: 0.5; }
+@keyframes dustPulse3 {
+  0%   { opacity: 0.2; transform: translateY(0px); }
+  50%  { opacity: 0.45; transform: translateY(-8px) translateX(1px); }
+  100% { opacity: 0.2; transform: translateY(-3px); }
 }

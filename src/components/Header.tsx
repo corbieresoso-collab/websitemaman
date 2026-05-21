@@ -24,17 +24,23 @@ export default function Header({ lang, dict }: HeaderProps) {
 
   const navLinks = [
     { href: `/${lang}/galerie`, label: dict.nav.gallery },
-    { href: `/${lang}/atelier`, label: dict.nav.studio },
+    { href: `/${lang}/apropos`, label: dict.nav.about },
+    { href: `/${lang}/commander`, label: dict.nav.order },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-bg/88 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
         {/* Logo */}
         <Link
           href={`/${lang}`}
-          className="text-text hover:text-text/70 transition-colors"
-          style={{ fontFamily: "var(--font-display)", fontSize: "1.2rem", fontStyle: "italic", fontWeight: 300 }}
+          className="text-text hover:text-muted transition-colors"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "1.2rem",
+            fontStyle: "italic",
+            fontWeight: 300,
+          }}
         >
           Nathalie Żieba
         </Link>
@@ -45,7 +51,7 @@ export default function Header({ lang, dict }: HeaderProps) {
             <Link
               key={l.href}
               href={l.href}
-              className="text-muted hover:text-text transition-colors text-xs tracking-[0.2em] uppercase"
+              className="text-muted hover:text-text transition-colors duration-300 text-xs tracking-[0.2em] uppercase"
               style={{ fontFamily: "var(--font-body)" }}
             >
               {l.label}
@@ -58,8 +64,10 @@ export default function Header({ lang, dict }: HeaderProps) {
               <Link
                 key={loc}
                 href={switchLocalePath(loc)}
-                className={`text-xs tracking-widest uppercase transition-colors ${
-                  loc === lang ? "text-teal" : "text-muted hover:text-text"
+                className={`text-xs tracking-widest uppercase transition-colors duration-300 ${
+                  loc === lang
+                    ? "text-gold"
+                    : "text-muted hover:text-text"
                 }`}
                 style={{ fontFamily: "var(--font-body)" }}
               >
@@ -116,7 +124,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                 href={switchLocalePath(loc)}
                 onClick={() => setMenuOpen(false)}
                 className={`text-xs tracking-widest uppercase transition-colors ${
-                  loc === lang ? "text-teal" : "text-muted hover:text-text"
+                  loc === lang ? "text-gold" : "text-muted hover:text-text"
                 }`}
                 style={{ fontFamily: "var(--font-body)" }}
               >

@@ -1,13 +1,13 @@
 {
   "nav": {
     "gallery": "Galería",
-    "studio": "Taller",
+    "about": "Acerca de",
     "order": "Encargar"
   },
   "home": {
-    "tagline": "Visiones desde adentro",
+    "tagline": "Visiones del interior",
     "subtitle": "Obras originales en lápiz de color sobre papel negro",
-    "enter": "Entrar en la galería"
+    "enter": "Entrar a la galería"
   },
   "gallery": {
     "title": "Galería",
@@ -48,6 +48,31 @@
       "fineart": "Fine Art algodón 300g",
       "canvas": "Lienzo canvas"
     }
+  },
+  "about": {
+    "title": "Acerca de",
+    "name": "Nathalie Żieba",
+    "bio_1": "Desde la infancia, Nathalie dibuja lo que las palabras no pueden decir. Sus obras nacen en la oscuridad — sobre papel negro, con lápices de colores — como si la luz tuviera que ganarse su existencia.",
+    "bio_2": "Su universo existe entre dos escalas imposibles: la microscópica y la cósmica. Sus formas evocan tanto células vistas al microscopio como nebulosas observadas por telescopio. Entre ambas se encuentra el interior del ser humano.",
+    "bio_3": "Cada obra es un sueño capturado antes del olvido. Una anatomía de lo invisible.",
+    "quote": "Dibujo lo que veo cuando cierro los ojos.",
+    "technique_title": "Técnica",
+    "technique_detail": "Lápiz de color sobre papel negro",
+    "contact_title": "Contacto",
+    "contact_text": "Para cualquier pregunta sobre las obras o reproducciones:"
+  },
+  "how": {
+    "title": "¿Cómo funciona?",
+    "subtitle": "Cada reproducción es una pieza única, impresa con cuidado.",
+    "step1_title": "Elige una obra",
+    "step1_text": "Explora las cuatro colecciones. Cuando una obra te conmueva, haz clic en «Encargar una reproducción».",
+    "step2_title": "Elige tu formato",
+    "step2_text": "Varios formatos y tipos de papel disponibles — desde A4 hasta 50×70 cm, mate, satinado o Fine Art algodón 300g.",
+    "step3_title": "Nathalie imprime para ti",
+    "step3_text": "Nathalie recibe tu pedido y supervisa cada impresión. Plazo medio 2 a 3 semanas, envío cuidadoso.",
+    "cta_gallery": "Ver la galería",
+    "form_title": "Realizar un pedido",
+    "form_intro": "Rellena este formulario y Nathalie te responderá en 48h con un presupuesto detallado."
   },
   "studio": {
     "title": "Taller",
