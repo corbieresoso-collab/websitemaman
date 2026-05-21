@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import type { Artwork, Serie } from "@/lib/artworks";
 import type { Locale, Dictionary } from "@/lib/dictionaries";
 
@@ -75,23 +75,20 @@ export default function GalleryClient({
               tagline={meta.tagline[lang]}
               previewArtwork={serieArtworks[0]}
             />
-
-            {serieArtworks.map((artwork, i) => (
-              <ArtworkSection
-                key={artwork.id}
-                artwork={artwork}
-                lang={lang}
-                dict={dict}
-                isFirst={i === 0}
-                isEven={i % 2 === 0}
-              />
-            ))}
+            <SeriesCarousel
+              artworks={serieArtworks}
+              lang={lang}
+              dict={dict}
+              serieLabel={serieLabel}
+            />
           </section>
         );
       })}
     </div>
   );
 }
+
+/* ─── Chapter navigation ─────────────────────────────── */
 
 function ChapterNav({
   series,
@@ -130,6 +127,8 @@ function ChapterNav({
     </nav>
   );
 }
+
+/* ─── Chapter header (full-screen intro per series) ──── */
 
 function ChapterHeader({
   number,
@@ -225,173 +224,271 @@ function ChapterHeader({
   );
 }
 
-function ArtworkSection({
-  artwork,
+/* ─── Horizontal carousel per series ────────────────── */
+
+const slideVariants = {
+  enter: (dir: number) => ({
+    opacity: 0,
+    x: dir > 0 ? 80 : -80,
+  }),
+  center: {
+    opacity: 1,
+    x: 0,
+  },
+  exit: (dir: number) => ({
+    opacity: 0,
+    x: dir > 0 ? -80 : 80,
+  }),
+};
+
+const textVariants = {
+  enter: { opacity: 0, y: 16 },
+  center: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -16 },
+};
+
+function SeriesCarousel({
+  artworks,
   lang,
   dict,
-  isFirst,
-  isEven,
+  serieLabel,
 }: {
-  artwork: Artwork;
+  artworks: Artwork[];
   lang: Locale;
   dict: Dictionary;
-  isFirst: boolean;
-  isEven: boolean;
+  serieLabel: string;
 }) {
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-8% 0px" });
+  const inView = useInView(ref, { once: true, margin: "-5% 0px" });
+  const touchStartX = useRef<number>(0);
 
+  const total = artworks.length;
+  const artwork = artworks[index];
   const title = artwork.titles[lang];
   const description = artwork.descriptions[lang];
-  const serieLabel =
-    dict.gallery.series[artwork.serie as keyof typeof dict.gallery.series];
 
-  if (isFirst) {
-    return (
-      <div
-        ref={ref}
-        className="relative min-h-[90vh] flex items-end overflow-hidden"
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 1.04 }}
-          animate={inView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={artwork.image}
-            alt={title}
-            fill
-            className="object-contain"
-            sizes="100vw"
-          />
+  const navigate = useCallback(
+    (dir: number) => {
+      setDirection(dir);
+      setIndex((prev) => (prev + dir + total) % total);
+    },
+    [total]
+  );
+
+  const goTo = useCallback(
+    (i: number) => {
+      setDirection(i > index ? 1 : -1);
+      setIndex(i);
+    },
+    [index]
+  );
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 48) navigate(dx > 0 ? -1 : 1);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      className="relative py-16 md:py-24"
+    >
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16 lg:gap-24">
+
+          {/* ── Artwork + passe-partout ── */}
           <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to top, rgb(7,7,10) 0%, rgba(7,7,10,0.92) 25%, rgba(7,7,10,0.5) 50%, rgba(7,7,10,0.1) 75%, transparent 100%)",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-bg/40 via-transparent to-bg/40" />
-        </motion.div>
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 pb-20 md:pb-28">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 md:gap-20">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.5 }}
+            className="w-full md:w-[55%] relative"
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
+            {/* Passe-partout frame */}
+            <div
+              className="relative overflow-hidden"
+              style={{
+                background: "#1a1510",
+                padding: "clamp(20px, 5vw, 48px)",
+                boxShadow:
+                  "0 8px 40px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.4)",
+                border: "1px solid rgba(201,168,76,0.07)",
+              }}
             >
-              <p
-                className="text-teal text-xs tracking-[0.35em] uppercase mb-4"
-                style={{ fontFamily: "var(--font-body)" }}
-              >
-                {serieLabel}
-              </p>
-              <h3
-                className="font-light italic text-text leading-none"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
-                }}
-              >
-                {title}
-              </h3>
-            </motion.div>
+              <div className="relative" style={{ aspectRatio: "1 / 1" }}>
+                <AnimatePresence custom={direction} mode="wait">
+                  <motion.div
+                    key={artwork.id}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={artwork.image}
+                      alt={title}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 90vw, 50vw"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.8 }}
-              className="md:max-w-xs"
+            {/* Arrow buttons — flanking the frame */}
+            <button
+              onClick={() => navigate(-1)}
+              aria-label="Œuvre précédente"
+              className="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-muted/40 hover:text-teal transition-colors duration-300 group"
             >
-              <p
-                className="text-muted text-sm leading-loose mb-8"
-                style={{ fontFamily: "var(--font-body)" }}
+              <ArrowLeft />
+            </button>
+            <button
+              onClick={() => navigate(1)}
+              aria-label="Œuvre suivante"
+              className="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-muted/40 hover:text-teal transition-colors duration-300 group"
+            >
+              <ArrowRight />
+            </button>
+          </div>
+
+          {/* ── Text block ── */}
+          <div className="w-full md:w-[45%] flex flex-col">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={artwork.id + "-text"}
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.4, ease: "easeOut" }}
               >
-                {description}
-              </p>
-              <Link
-                href={`/${lang}/oeuvre/${artwork.id}`}
-                className="inline-flex items-center gap-4 text-text/40 hover:text-teal transition-colors duration-500 text-xs tracking-[0.25em] uppercase group"
-                style={{ fontFamily: "var(--font-body)" }}
-              >
-                <span className="w-8 h-px bg-current group-hover:w-14 transition-all duration-500" />
-                {dict.artwork.order_cta}
-              </Link>
-            </motion.div>
+                {/* Counter */}
+                <p
+                  className="text-muted/40 mb-7"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "10px",
+                    letterSpacing: "0.45em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {String(index + 1).padStart(2, "0")} /{" "}
+                  {String(total).padStart(2, "0")}
+                </p>
+
+                <p
+                  className="text-teal mb-4"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "10px",
+                    letterSpacing: "0.35em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {serieLabel}
+                </p>
+
+                <h3
+                  className="font-light italic text-text leading-tight mb-7"
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "clamp(2rem, 4vw, 3.5rem)",
+                  }}
+                >
+                  {title}
+                </h3>
+
+                <div className="w-8 h-px mb-7" style={{ background: "rgba(78,205,196,0.35)" }} />
+
+                <p
+                  className="text-muted text-sm leading-loose mb-10"
+                  style={{ fontFamily: "var(--font-body)" }}
+                >
+                  {description}
+                </p>
+
+                <Link
+                  href={`/${lang}/oeuvre/${artwork.id}`}
+                  className="inline-flex items-center gap-4 text-text/40 hover:text-teal transition-colors duration-500 group self-start"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "11px",
+                    letterSpacing: "0.25em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  <span className="w-8 h-px bg-current group-hover:w-14 transition-all duration-500" />
+                  {dict.artwork.order_cta}
+                </Link>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Dots */}
+            <div className="flex items-center gap-2 mt-10 flex-wrap">
+              {artworks.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Œuvre ${i + 1}`}
+                  className="h-1 rounded-full transition-all duration-400"
+                  style={{
+                    width: i === index ? "16px" : "4px",
+                    background:
+                      i === index
+                        ? "rgba(78,205,196,0.8)"
+                        : "rgba(107,107,122,0.3)",
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    );
-  }
+    </motion.div>
+  );
+}
 
+/* ─── SVG arrows ─────────────────────────────────────── */
+
+function ArrowLeft() {
   return (
-    <div
-      ref={ref}
-      className={`flex flex-col ${isEven ? "md:flex-row-reverse" : "md:flex-row"} min-h-[75vh]`}
+    <svg
+      width="20"
+      height="14"
+      viewBox="0 0 20 14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1"
     >
-      {/* Image side */}
-      <motion.div
-        initial={{ opacity: 0, x: isEven ? 50 : -50 }}
-        animate={inView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-        className="relative md:w-[60%] min-h-[60vw] md:min-h-0 overflow-hidden"
-      >
-        <Link
-          href={`/${lang}/oeuvre/${artwork.id}`}
-          className="absolute inset-0 flex items-center justify-center p-8 md:p-12 group"
-        >
-          <div className="relative w-full h-full">
-            <Image
-              src={artwork.image}
-              alt={title}
-              fill
-              className="object-contain transition-transform duration-700 group-hover:scale-[1.03]"
-              sizes="(max-width: 768px) 100vw, 60vw"
-            />
-          </div>
-        </Link>
-      </motion.div>
+      <line x1="20" y1="7" x2="1" y2="7" />
+      <polyline points="7,1 1,7 7,13" />
+    </svg>
+  );
+}
 
-      {/* Text side */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1.1, delay: 0.3 }}
-        className="md:w-[40%] flex flex-col justify-center px-10 md:px-12 lg:px-20 py-16 md:py-0 border-t border-border/30 md:border-t-0 md:border-l md:border-border/20"
-      >
-        <p
-          className="text-teal text-xs tracking-[0.35em] uppercase mb-5"
-          style={{ fontFamily: "var(--font-body)" }}
-        >
-          {serieLabel}
-        </p>
-        <h3
-          className="font-light italic text-text leading-tight mb-7"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(2rem, 4vw, 3.5rem)",
-          }}
-        >
-          {title}
-        </h3>
-        <div className="w-8 h-px bg-teal/40 mb-7" />
-        <p
-          className="text-muted text-sm leading-loose mb-10"
-          style={{ fontFamily: "var(--font-body)" }}
-        >
-          {description}
-        </p>
-        <Link
-          href={`/${lang}/oeuvre/${artwork.id}`}
-          className="inline-flex items-center gap-4 text-text/40 hover:text-teal transition-colors duration-500 text-xs tracking-[0.25em] uppercase group self-start"
-          style={{ fontFamily: "var(--font-body)" }}
-        >
-          <span className="w-8 h-px bg-current group-hover:w-14 transition-all duration-500" />
-          {dict.artwork.order_cta}
-        </Link>
-      </motion.div>
-    </div>
+function ArrowRight() {
+  return (
+    <svg
+      width="20"
+      height="14"
+      viewBox="0 0 20 14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1"
+    >
+      <line x1="0" y1="7" x2="19" y2="7" />
+      <polyline points="13,1 19,7 13,13" />
+    </svg>
   );
 }
