@@ -56,50 +56,57 @@ export default async function HomePage({
             src={hero.image}
             alt={heroTitle}
             fill
-            className="object-cover opacity-55"
+            className="object-cover opacity-65"
             priority
           />
-          {/* Top/bottom fade */}
-          <div className="absolute inset-0 bg-gradient-to-b from-bg/30 via-transparent to-bg/60" />
-          {/* Soft dark radial behind text — keeps artwork visible at edges */}
+          {/* Top/bottom cream fade */}
+          <div className="absolute inset-0 bg-gradient-to-b from-bg/40 via-transparent to-bg/70" />
+          {/* Strong dark vignette — darkens center where text lives, edges stay lit */}
           <div
             className="absolute inset-0"
             style={{
-              background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,0.35) 0%, transparent 100%)",
+              background: "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.20) 60%, transparent 100%)",
             }}
           />
         </div>
 
-        <div className="relative z-10 text-center px-6 max-w-2xl mx-auto">
+        {/* Text block with frosted backdrop for guaranteed legibility */}
+        <div
+          className="relative z-10 text-center px-10 py-12 max-w-2xl mx-auto"
+          style={{
+            backdropFilter: "blur(2px)",
+            WebkitBackdropFilter: "blur(2px)",
+          }}
+        >
           <p
-            className="animate-fade-in delay-200 tracking-[0.35em] uppercase text-xs mb-8"
+            className="animate-fade-in delay-200 tracking-[0.45em] uppercase text-xs mb-8"
             style={{
               fontFamily: "var(--font-body)",
-              color: "rgba(250,247,242,0.65)",
-              textShadow: "0 1px 10px rgba(0,0,0,0.5)",
+              color: "rgba(250,247,242,0.70)",
+              letterSpacing: "0.45em",
             }}
           >
             Nathalie Zięba
           </p>
 
           <h1
-            className="animate-fade-in-up delay-400 font-light italic leading-none mb-6"
+            className="animate-fade-in-up delay-400 font-light italic leading-none mb-8"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(3.5rem, 12vw, 8rem)",
-              color: "#faf7f2",
-              textShadow: "0 2px 40px rgba(0,0,0,0.6), 0 1px 8px rgba(0,0,0,0.4)",
+              color: "#ffffff",
+              textShadow: "0 4px 60px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.9)",
             }}
           >
             {dict.home.tagline}
           </h1>
 
           <p
-            className="animate-fade-in-up delay-600 text-xs tracking-[0.3em] uppercase mb-16"
+            className="animate-fade-in-up delay-600 text-xs tracking-[0.35em] uppercase mb-14"
             style={{
               fontFamily: "var(--font-body)",
-              color: "rgba(250,247,242,0.80)",
-              textShadow: "0 1px 12px rgba(0,0,0,0.5)",
+              color: "rgba(250,247,242,0.75)",
+              textShadow: "0 1px 20px rgba(0,0,0,0.8)",
             }}
           >
             {dict.home.subtitle}
