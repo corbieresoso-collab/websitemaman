@@ -121,6 +121,26 @@ export default async function HomePage({
         </div>
       </div>
 
+      {/* ── Collections header ── */}
+      <div className="py-24 md:py-32 text-center">
+        <p
+          className="text-muted tracking-[0.5em] uppercase text-xs mb-6"
+          style={{ fontFamily: "var(--font-body)" }}
+        >
+          {l === "fr" ? "Les collections" : l === "en" ? "The collections" : "Las colecciones"}
+        </p>
+        <h2
+          className="font-light italic text-text leading-none mb-6"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(2rem, 5vw, 3.5rem)",
+          }}
+        >
+          {l === "fr" ? "Découvrez les collections" : l === "en" ? "Explore the collections" : "Descubre las colecciones"}
+        </h2>
+        <div className="w-8 h-px bg-gold/50 mx-auto" />
+      </div>
+
       {/* ── Collections — cinematic chapters ── */}
       {series.map((serie, i) => {
         const isEven = i % 2 === 0;
