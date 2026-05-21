@@ -115,8 +115,16 @@ export default async function HomePage({
           <div className="animate-fade-in-up delay-800">
             <Link
               href={`/${l}/galerie`}
-              className="hero-cta-solid inline-block transition-all duration-500 px-10 py-4 tracking-[0.25em] uppercase text-xs"
-              style={{ fontFamily: "var(--font-body)" }}
+              className="inline-block transition-all duration-500 px-10 py-4 tracking-[0.25em] uppercase text-xs"
+              style={{
+                fontFamily: "var(--font-body)",
+                background: "rgba(201,168,76,0.12)",
+                border: "1px solid rgba(201,168,76,0.60)",
+                color: "#faf7f2",
+                backdropFilter: "blur(4px)",
+                WebkitBackdropFilter: "blur(4px)",
+                textShadow: "0 1px 8px rgba(0,0,0,0.6)",
+              }}
             >
               {dict.home.enter}
             </Link>
