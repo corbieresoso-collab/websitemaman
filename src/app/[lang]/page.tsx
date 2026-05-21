@@ -56,11 +56,11 @@ export default async function HomePage({
             src={hero.image}
             alt={heroTitle}
             fill
-            className="object-cover opacity-[0.12]"
+            className="object-cover opacity-[0.28]"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-bg/60 via-bg/30 to-bg/80" />
-          <div className="absolute inset-0 bg-gradient-to-r from-bg/70 via-transparent to-bg/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-bg/40 via-transparent to-bg/65" />
+          <div className="absolute inset-0 bg-gradient-to-r from-bg/45 via-transparent to-bg/45" />
         </div>
 
         <div className="relative z-10 text-center px-6 max-w-2xl mx-auto">
@@ -68,7 +68,7 @@ export default async function HomePage({
             className="animate-fade-in delay-200 text-muted tracking-[0.35em] uppercase text-xs mb-8"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Nathalie Żieba
+            Nathalie Zięba
           </p>
 
           <h1

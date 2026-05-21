@@ -42,7 +42,7 @@ export default function Header({ lang, dict }: HeaderProps) {
             fontWeight: 300,
           }}
         >
-          Nathalie Żieba
+          Nathalie Zięba
         </Link>
 
         {/* Desktop nav */}

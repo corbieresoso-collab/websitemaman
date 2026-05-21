@@ -13,7 +13,7 @@ export default function Footer({ dict }: FooterProps) {
           className="text-muted text-xs tracking-widest uppercase"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Nathalie Żieba © {new Date().getFullYear()} — {dict.footer.rights}
+          Nathalie Zięba © {new Date().getFullYear()} — {dict.footer.rights}
         </p>
         <p
           className="text-muted/50 text-xs"

@@ -50,7 +50,7 @@ export default async function AProposPage({
             className="animate-fade-in text-muted tracking-[0.4em] uppercase text-xs mb-6"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Nathalie Żieba
+            Nathalie Zięba
           </p>
           <h1
             className="animate-fade-in-up delay-200 font-light italic text-text leading-none mb-8"
@@ -189,13 +189,6 @@ export default async function AProposPage({
                 >
                   {a.contact_text}
                 </p>
-                <a
-                  href="mailto:corbiere.entertainment.bali@gmail.com"
-                  className="text-gold hover:text-gold/70 transition-colors text-sm tracking-wide"
-                  style={{ fontFamily: "var(--font-body)" }}
-                >
-                  corbiere.entertainment.bali@gmail.com
-                </a>
               </div>
             </div>
           </div>

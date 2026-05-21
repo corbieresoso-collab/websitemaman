@@ -65,6 +65,17 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* Arc carousel center float */
+@keyframes cardFloat {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.arc-center-float {
+  animation: cardFloat 4s ease-in-out infinite;
+}
+
 /* Golden dust layers */
 .dust-layer-1 {
   animation: dustPulse1 9s ease-in-out infinite alternate;

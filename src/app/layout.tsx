@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Nathalie Żieba — Visions du dedans",
+  title: "Nathalie Zięba — Visions du dedans",
   description:
     "Œuvres originales au crayon de couleur sur papier noir. Univers psychédélique, cosmique et intérieur.",
 };
