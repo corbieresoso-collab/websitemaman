@@ -56,7 +56,7 @@ export default async function HomePage({
             src={hero.image}
             alt={heroTitle}
             fill
-            className="object-cover opacity-65"
+            className="object-cover opacity-50"
             priority
           />
           {/* Top/bottom cream fade */}
@@ -65,7 +65,7 @@ export default async function HomePage({
           <div
             className="absolute inset-0"
             style={{
-              background: "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.20) 60%, transparent 100%)",
+              background: "radial-gradient(ellipse 90% 80% at 50% 48%, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.40) 50%, rgba(0,0,0,0.10) 80%, transparent 100%)",
             }}
           />
         </div>
