@@ -69,23 +69,21 @@ export default async function AProposPage({
       <div className="max-w-6xl mx-auto px-6 pb-32">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-start">
 
-          {/* Left — artwork */}
+          {/* Left — artist portrait */}
           <div className="animate-fade-in-up delay-200">
             <div
               className="relative overflow-hidden"
               style={{
-                background: "#f3ece0",
-                padding: "clamp(20px, 4vw, 40px)",
-                boxShadow: "0 20px 60px rgba(28,20,16,0.1), 0 4px 16px rgba(28,20,16,0.06)",
-                border: "1px solid rgba(201,168,76,0.1)",
+                boxShadow: "0 20px 60px rgba(28,20,16,0.12), 0 4px 16px rgba(28,20,16,0.06)",
+                border: "1px solid rgba(201,168,76,0.15)",
               }}
             >
               <div className="relative" style={{ aspectRatio: "1 / 1" }}>
                 <Image
-                  src={portrait.image}
-                  alt={portrait.titles[l]}
+                  src="/nathalie-portrait.png"
+                  alt="Nathalie Zięba"
                   fill
-                  className="object-contain"
+                  className="object-cover object-top"
                   sizes="(max-width: 768px) 90vw, 45vw"
                 />
               </div>
@@ -99,7 +97,7 @@ export default async function AProposPage({
                 textTransform: "uppercase",
               }}
             >
-              {portrait.titles[l]}
+              Nathalie Zięba — {l === "fr" ? "Dans son atelier" : l === "en" ? "In her studio" : "En su taller"}
             </p>
           </div>
 
